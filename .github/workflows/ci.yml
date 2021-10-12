@@ -1,5 +1,15 @@
 name: ci
-on: [push, pull_request]
+on:
+  # Trigger the workflow on push or pull request,
+  # but only for the main branch
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
 jobs:
   windows:
     runs-on: windows-latest
@@ -7,7 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Setup .NET Core SDK
-        uses: actions/setup-dotnet@v1.7.2
+        uses: actions/setup-dotnet@v1
         with:
           include-prerelease: true
           dotnet-version: 6.0.100-rc.1.21463.6
