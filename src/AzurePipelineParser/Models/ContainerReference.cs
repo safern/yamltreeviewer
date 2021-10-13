@@ -14,7 +14,7 @@ namespace AzurePipelineParser.Models
 
         public string? Endpoint { get; set; }
 
-        public IList<Variable> Env { get; set; } = new List<Variable>();
+        public Variables? Env { get; set; }
 
         public string? Title => ImageName;
 

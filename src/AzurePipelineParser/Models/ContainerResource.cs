@@ -16,7 +16,7 @@ namespace AzurePipelineParser.Models
 
         public string? Endpoint { get; set; }
 
-        public IList<Variable> Env { get; set; } = new List<Variable>();
+        public Variables? Env { get; set; }
         
         public IList<string> Ports { get; set; } = new List<string>();
 

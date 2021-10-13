@@ -27,6 +27,7 @@ namespace AzurePipelineParser.Models
         ContainerReference,
         Workspace,
         Uses,
+        VariableList,
         Condition
     }
 }

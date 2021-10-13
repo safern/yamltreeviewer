@@ -30,7 +30,7 @@ namespace AzurePipelineParser.Models
 
         public int? CancelTimeoutInMinutes { get; set; }
 
-        public IList<Variable> Variables { get; set; } = new List<Variable>();
+        public Variables? Variables { get; set; }
 
         public IList<Step> Steps { get; set; } = new List<Step>();
 

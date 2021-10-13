@@ -18,7 +18,7 @@ namespace AzurePipelineParser.Models
 
         public string? Condition { get; set; }
 
-        public IList<Variable> Variables { get; set; } = new List<Variable>();
+        public Variables? Variables { get; set; }
 
         public IList<Job> Jobs { get; set; } = new List<Job>();
 

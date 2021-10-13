@@ -12,7 +12,7 @@ namespace AzurePipelineParser.Models
 
         public Resources? Resources { get; set; }
 
-        public IList<Variable> Variables { get; set; } = new List<Variable>();
+        public Variables? Variables { get; set; }
 
         public PushTrigger? Trigger { get; set; }
 
