@@ -1,4 +1,4 @@
-﻿@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
+﻿@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css");
 
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -17,6 +17,15 @@ a, .btn-link {
     background-color: #1b6ec2;
     border-color: #1861ac;
 }
+
+.dotted-tree-line {
+    border-left: 1px dotted #cccccc;
+    padding-bottom: 1px;
+}
+
+    .dotted-tree-line.collapsed {
+        border-left: 0px;
+    }
 
 .content {
     padding-top: 1.1rem;

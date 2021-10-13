@@ -1,0 +1,96 @@
+﻿.node-children.collapsed {
+    display: none;
+}
+
+.tree-container {
+    padding-bottom: 10px;
+    margin-left: 0 !important;
+}
+
+.node-header {
+    left: -3px;
+    position: relative;
+    background-color: white;
+}
+
+    .node-header > i {
+        position: relative;
+        float: left;
+    }
+
+.node-icon {
+    font-size: 12px;
+    top: 4px;
+    margin-right: 5px;
+    margin-left: -2px;
+}
+
+    .node-icon.with-arrow {
+        margin-left: 3px;
+    }
+
+.title.with-value {
+    background: gray;
+    padding: 1px 5px;
+    font-size: 0.9em;
+    border-radius: 10px;
+    margin-left: 10px;
+    color: white;
+}
+
+.document-icon {
+    color: #009900;
+}
+
+.template-icon {
+    color: #751aff;
+}
+
+.job-icon {
+    color: #3385ff;
+}
+
+.arrow-right {
+    margin: 5px 5px 5px 0px;
+    position: relative;
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: middle;
+    transition: border-left linear 0.2s;
+    width: 8px;
+    height: 8px;
+    border: 2px solid gray;
+    border-left: 0;
+    border-top: 0;
+    transform: rotate(-45deg);
+    top: 3px;
+}
+
+    .arrow-right.expanded {
+        border: 2px solid black;
+        border-left: 0;
+        border-top: 0;
+        left: -1px;
+        top: 1px;
+        transform: rotate(45deg);
+        -webkit-transform: rotate(45deg);
+        -moz-transform: rotate(45deg);
+        -o-transform: rotate(45deg);
+    }
+
+    .arrow-right:hover {
+        border: 2px solid skyblue;
+        border-left: 0;
+        border-top: 0;
+    }
+
+    .arrow-right.no-toggle {
+        cursor: default;
+    }
+
+        .arrow-right.no-toggle:hover {
+            border: 2px solid black;
+            border-left: 0;
+            border-top: 0;
+        }
+

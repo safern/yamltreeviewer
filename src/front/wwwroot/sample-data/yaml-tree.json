@@ -1,0 +1,33 @@
+{
+  "value": "/eng/pipelines/runtime.yml",
+  "kind": 0,
+  "children": [
+    {
+      "children": [
+        {
+          "children": [],
+          "kind": 1,
+          "value": "eng/pipelines/platform-matrix.yml"
+        },
+        {
+          "children": [
+            {
+              "children": [],
+              "kind": 1,
+              "value": "xplat-setup.yml"
+            }
+          ],
+          "kind": 1,
+          "value": "eng/pipelines/platform-matrix.yml"
+        },
+        {
+          "children": [],
+          "kind": 1,
+          "value": "eng/pipelines/global-job.yml"
+        }
+      ],
+      "kind": 2,
+      "value": ""
+    }
+  ]
+}
