@@ -18,7 +18,7 @@ namespace AzurePipelineParser.Models
 
         public bool Enabled { get; set; }
 
-        public Variables? Env { get; set; }
+        public IList<Variable> Env { get; set; } = new List<Variable>();
 
         public int? timeoutInMinutes { get; set; }
 
