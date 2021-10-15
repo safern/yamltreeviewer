@@ -45,16 +45,6 @@ namespace AzurePipelineParser.Visitors
         {
             return new TemplateReference();
         }
-
-        public PipelineTrigger VisitPipelineTrigger(YamlMappingNode? node)
-        {
-            return new PipelineTrigger();
-        }
-
-        public PullRequestTrigger VisitPullRequestTrigger(YamlMappingNode? node)
-        {
-            return new PullRequestTrigger();
-        }
         #endregion
     }
 

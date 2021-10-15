@@ -70,7 +70,7 @@ variables:
         - main
         - releases/*
         exclude:
-        - users/*", @"{""Pipelines"":[{""Identifier"":""MyAppA"",""Project"":null,""Source"":""MyCIPipelineA"",""Version"":null,""Branch"":null,""Tags"":[],""Trigger"":null,""Title"":""MyAppA"",""Type"":9,""Children"":[]},{""Identifier"":""MyAppB"",""Project"":null,""Source"":""MyCIPipelineB"",""Version"":null,""Branch"":null,""Tags"":[],""Trigger"":{""Branches"":{""Id"":""branches"",""Include"":[],""Exclude"":[],""Title"":""branches"",""Type"":15,""Children"":[]},""Tags"":[],""Stages"":[],""Title"":""trigger"",""Type"":14,""Children"":[]},""Title"":""MyAppB"",""Type"":9,""Children"":[{""Title"":""trigger"",""Type"":14,""Children"":[]}]},{""Identifier"":""MyAppC"",""Project"":""DevOpsProject"",""Source"":""MyCIPipelineC"",""Version"":""20190718.2"",""Branch"":""releases/M159"",""Tags"":[],""Trigger"":{""Branches"":{""Id"":""branches"",""Include"":[],""Exclude"":[],""Title"":""branches"",""Type"":15,""Children"":[]},""Tags"":[],""Stages"":[],""Title"":""trigger"",""Type"":14,""Children"":[]},""Title"":""MyAppC"",""Type"":9,""Children"":[{""Title"":""trigger"",""Type"":14,""Children"":[]}]}],""Repositories"":[],""Containers"":[],""Packages"":[],""Title"":""resources"",""Type"":8,""Children"":[{""Title"":""MyAppA"",""Type"":9,""Children"":[]},{""Title"":""MyAppB"",""Type"":9,""Children"":[{""Title"":""trigger"",""Type"":14,""Children"":[]}]},{""Title"":""MyAppC"",""Type"":9,""Children"":[{""Title"":""trigger"",""Type"":14,""Children"":[]}]}]}" };
+        - users/*", @"{""Pipelines"":[{""Identifier"":""MyAppA"",""Project"":null,""Source"":""MyCIPipelineA"",""Version"":null,""Branch"":null,""Tags"":[],""Trigger"":null,""Title"":""MyAppA"",""Type"":9,""Children"":[]},{""Identifier"":""MyAppB"",""Project"":null,""Source"":""MyCIPipelineB"",""Version"":null,""Branch"":null,""Tags"":[],""Trigger"":{""Branches"":{""Id"":""branches"",""Include"":[],""Exclude"":[],""Title"":""branches"",""Type"":15,""Children"":[]},""Tags"":[],""Stages"":[],""TriggerOnPipelineCompletion"":true,""Title"":""trigger"",""Type"":14,""Children"":[]},""Title"":""MyAppB"",""Type"":9,""Children"":[{""Title"":""trigger"",""Type"":14,""Children"":[]}]},{""Identifier"":""MyAppC"",""Project"":""DevOpsProject"",""Source"":""MyCIPipelineC"",""Version"":""20190718.2"",""Branch"":""releases/M159"",""Tags"":[],""Trigger"":{""Branches"":{""Id"":null,""Include"":[""main"",""releases/*""],""Exclude"":[""users/*""],""Title"":null,""Type"":15,""Children"":[]},""Tags"":[],""Stages"":[],""TriggerOnPipelineCompletion"":false,""Title"":""trigger"",""Type"":14,""Children"":[{""Title"":null,""Type"":15,""Children"":[]}]},""Title"":""MyAppC"",""Type"":9,""Children"":[{""Title"":""trigger"",""Type"":14,""Children"":[{""Title"":null,""Type"":15,""Children"":[]}]}]}],""Repositories"":[],""Containers"":[],""Packages"":[],""Title"":""resources"",""Type"":8,""Children"":[{""Title"":""MyAppA"",""Type"":9,""Children"":[]},{""Title"":""MyAppB"",""Type"":9,""Children"":[{""Title"":""trigger"",""Type"":14,""Children"":[]}]},{""Title"":""MyAppC"",""Type"":9,""Children"":[{""Title"":""trigger"",""Type"":14,""Children"":[{""Title"":null,""Type"":15,""Children"":[]}]}]}]}" };
 
             yield return new object[] { @"resources:
   repositories:
@@ -150,7 +150,7 @@ variables:
     - features/experimental/*
   paths:
     exclude:
-    - README.md", @"{""Name"":null,""BranchNames"":[],""Batch"":true,""Disabled"":false,""Branches"":{""Id"":null,""Include"":[""[ features/* ]""],""Exclude"":[""[ features/experimental/* ]""],""Title"":null,""Type"":15,""Children"":[]},""Tags"":{""Id"":""tags"",""Include"":[],""Exclude"":[],""Title"":""tags"",""Type"":15,""Children"":[]},""Paths"":{""Id"":null,""Include"":[],""Exclude"":[""[ README.md ]""],""Title"":null,""Type"":15,""Children"":[]},""Title"":""trigger"",""Type"":14,""Children"":[{""Title"":null,""Type"":15,""Children"":[]},{""Title"":null,""Type"":15,""Children"":[]}]}" };
+    - README.md", @"{""Name"":null,""BranchNames"":[],""Batch"":true,""Disabled"":false,""Branches"":{""Id"":null,""Include"":[""features/*""],""Exclude"":[""features/experimental/*""],""Title"":null,""Type"":15,""Children"":[]},""Tags"":{""Id"":""tags"",""Include"":[],""Exclude"":[],""Title"":""tags"",""Type"":15,""Children"":[]},""Paths"":{""Id"":null,""Include"":[],""Exclude"":[""README.md""],""Title"":null,""Type"":15,""Children"":[]},""Title"":""trigger"",""Type"":14,""Children"":[{""Title"":null,""Type"":15,""Children"":[]},{""Title"":null,""Type"":15,""Children"":[]}]}" };
         }
 
         [Theory]
@@ -167,6 +167,43 @@ variables:
             var triggerNode = root!.Children.Where(n => n.Key.ToString().Equals("trigger")).FirstOrDefault();
 
             var result = visitor.VisitPushTrigger(triggerNode.Value);
+            var serializedResult = JsonSerializer.Serialize(result);
+            Assert.Equal(expectedJson, serializedResult);
+        }
+
+        public static IEnumerable<object[]> PrTestData()
+        {
+            yield return new object[] { @"pr:
+- main
+- develop", @"{""Name"":null,""BranchNames"":[""main"",""develop""],""AutoCancel"":false,""Disabled"":false,""Branches"":{""Id"":""branches"",""Include"":[],""Exclude"":[],""Title"":""branches"",""Type"":15,""Children"":[]},""Paths"":{""Id"":""paths"",""Include"":[],""Exclude"":[],""Title"":""paths"",""Type"":15,""Children"":[]},""Drafts"":null,""Title"":""pr"",""Type"":14,""Children"":[]}" };
+
+            yield return new object[] { @"pr: none # will disable PR builds (but not CI builds)", @"{""Name"":null,""BranchNames"":[],""AutoCancel"":false,""Disabled"":true,""Branches"":{""Id"":""branches"",""Include"":[],""Exclude"":[],""Title"":""branches"",""Type"":15,""Children"":[]},""Paths"":{""Id"":""paths"",""Include"":[],""Exclude"":[],""Title"":""paths"",""Type"":15,""Children"":[]},""Drafts"":null,""Title"":""pr"",""Type"":14,""Children"":[]}" };
+
+            yield return new object[] { @"pr:
+  branches:
+    include:
+    - features/*
+    exclude:
+    - features/experimental/*
+  paths:
+    exclude:
+    - README.md", @"{""Name"":null,""BranchNames"":[],""AutoCancel"":false,""Disabled"":false,""Branches"":{""Id"":null,""Include"":[""features/*""],""Exclude"":[""features/experimental/*""],""Title"":null,""Type"":15,""Children"":[]},""Paths"":{""Id"":null,""Include"":[],""Exclude"":[""README.md""],""Title"":null,""Type"":15,""Children"":[]},""Drafts"":null,""Title"":""pr"",""Type"":14,""Children"":[{""Title"":null,""Type"":15,""Children"":[]},{""Title"":null,""Type"":15,""Children"":[]}]}" };
+        }
+
+        [Theory]
+        [MemberData(nameof(PrTestData))]
+        public void CanParsePRTriggers(string yaml, string expectedJson)
+        {
+            var reader = new StringReader(yaml);
+            Visitor visitor = new Visitor(string.Empty, string.Empty);
+
+            var yamlStream = new YamlStream();
+            yamlStream.Load(reader);
+
+            var root = yamlStream.Documents[0].RootNode as YamlMappingNode;
+            var triggerNode = root!.Children.Where(n => n.Key.ToString().Equals("pr")).FirstOrDefault();
+
+            var result = visitor.VisitPullRequestTrigger(triggerNode.Value);
             var serializedResult = JsonSerializer.Serialize(result);
             Assert.Equal(expectedJson, serializedResult);
         }

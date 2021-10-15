@@ -284,7 +284,7 @@ namespace AzurePipelineParser.Visitors
                         pipelineResource.Branch = child.Value.ToString();
                         break;
                     case "trigger":
-                        var trigger = VisitPipelineTrigger(child.Value as YamlMappingNode);
+                        var trigger = VisitPipelineTrigger(child.Value);
                         pipelineResource.Trigger = trigger;
                         pipelineResource.Children.Add(trigger);
                         break;

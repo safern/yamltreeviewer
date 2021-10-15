@@ -35,7 +35,7 @@ namespace AzurePipelineParser.Visitors
                         result.Trigger = trigger;
                         break;
                     case "pr":
-                        var prTrigger = VisitPullRequestTrigger(child.Value as YamlMappingNode);
+                        var prTrigger = VisitPullRequestTrigger(child.Value);
                         result.Children.Add(prTrigger);
                         result.Pr = prTrigger;
                         break;

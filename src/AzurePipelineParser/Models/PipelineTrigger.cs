@@ -14,6 +14,8 @@ namespace AzurePipelineParser.Models
 
         public IList<string> Stages { get; set; } = new List<string>();
 
+        public bool TriggerOnPipelineCompletion { get; set; }
+
         public string? Title => "trigger";
 
         public PipelineNodeTypes Type => PipelineNodeTypes.Trigger;
