@@ -29,7 +29,7 @@ namespace AzurePipelineParser.Models
 
     public enum PackageType
     {
-        NuGet,
-        Npm
+        nuget,
+        npm
     }
 }

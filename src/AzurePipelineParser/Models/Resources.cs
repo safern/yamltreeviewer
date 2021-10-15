@@ -8,15 +8,15 @@ namespace AzurePipelineParser.Models
     {
         private List<IPipelineNode> _children = new List<IPipelineNode>();
 
-        public PipelineResource? Pipelines { get; set; } 
+        public IList<PipelineResource> Pipelines { get; set; } = new List<PipelineResource>();
 
         // public BuildResource? Builds { get; set; } ToDo: Find schema for this type of resource
 
-        public RepositoryResource? Repositories { get; set; }
+        public IList<RepositoryResource> Repositories { get; set; } = new List<RepositoryResource>();
 
-        public ContainerResource? Containers { get; set; }
+        public IList<ContainerResource> Containers { get; set; } = new List<ContainerResource>();
 
-        public PackageResource? Packages { get; set; }
+        public IList<PackageResource> Packages { get; set; } = new List<PackageResource>();
 
         public string? Title => "resources";
 

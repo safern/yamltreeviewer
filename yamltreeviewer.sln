@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "yamltreeviewer", "src\front
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzurePipelineParser", "src\AzurePipelineParser\AzurePipelineParser.csproj", "{82F8F659-5A3D-450D-888F-2BA179C5E77D}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzurePipelineParser.Tests", "tests\AzurePipelineParser.Tests\AzurePipelineParser.Tests.csproj", "{9EF678ED-6228-47A7-8441-D441304FF6A6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{82F8F659-5A3D-450D-888F-2BA179C5E77D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{82F8F659-5A3D-450D-888F-2BA179C5E77D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{82F8F659-5A3D-450D-888F-2BA179C5E77D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9EF678ED-6228-47A7-8441-D441304FF6A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EF678ED-6228-47A7-8441-D441304FF6A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9EF678ED-6228-47A7-8441-D441304FF6A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9EF678ED-6228-47A7-8441-D441304FF6A6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
