@@ -6,7 +6,7 @@ using YamlDotNet.RepresentationModel;
 
 namespace AzurePipelineParser.Visitors
 {
-    public partial class Visitor
+    public partial class PipelineVisitor
     {
         public Variables VisitVariables(YamlNode node)
         {

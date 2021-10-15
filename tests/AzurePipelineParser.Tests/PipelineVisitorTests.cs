@@ -37,7 +37,7 @@ variables:
         public void CanParseVariables(string yaml, string expectedJson)
         {
             var reader = new StringReader(yaml);
-            Visitor visitor = new Visitor(string.Empty, string.Empty);
+            PipelineVisitor visitor = new PipelineVisitor(string.Empty, string.Empty);
 
             var yamlStream = new YamlStream();
             yamlStream.Load(reader);
@@ -70,14 +70,14 @@ variables:
         - main
         - releases/*
         exclude:
-        - users/*", @"{""Pipelines"":[{""Identifier"":""MyAppA"",""Project"":null,""Source"":""MyCIPipelineA"",""Version"":null,""Branch"":null,""Tags"":[],""Trigger"":null,""Title"":""MyAppA"",""Type"":9,""Children"":[]},{""Identifier"":""MyAppB"",""Project"":null,""Source"":""MyCIPipelineB"",""Version"":null,""Branch"":null,""Tags"":[],""Trigger"":{""Branches"":{""Id"":""branches"",""Include"":[],""Exclude"":[],""Title"":""branches"",""Type"":15,""Children"":[]},""Tags"":[],""Stages"":[],""TriggerOnPipelineCompletion"":true,""Title"":""trigger"",""Type"":14,""Children"":[]},""Title"":""MyAppB"",""Type"":9,""Children"":[{""Title"":""trigger"",""Type"":14,""Children"":[]}]},{""Identifier"":""MyAppC"",""Project"":""DevOpsProject"",""Source"":""MyCIPipelineC"",""Version"":""20190718.2"",""Branch"":""releases/M159"",""Tags"":[],""Trigger"":{""Branches"":{""Id"":null,""Include"":[""main"",""releases/*""],""Exclude"":[""users/*""],""Title"":null,""Type"":15,""Children"":[]},""Tags"":[],""Stages"":[],""TriggerOnPipelineCompletion"":false,""Title"":""trigger"",""Type"":14,""Children"":[{""Title"":null,""Type"":15,""Children"":[]}]},""Title"":""MyAppC"",""Type"":9,""Children"":[{""Title"":""trigger"",""Type"":14,""Children"":[{""Title"":null,""Type"":15,""Children"":[]}]}]}],""Repositories"":[],""Containers"":[],""Packages"":[],""Title"":""resources"",""Type"":8,""Children"":[{""Title"":""MyAppA"",""Type"":9,""Children"":[]},{""Title"":""MyAppB"",""Type"":9,""Children"":[{""Title"":""trigger"",""Type"":14,""Children"":[]}]},{""Title"":""MyAppC"",""Type"":9,""Children"":[{""Title"":""trigger"",""Type"":14,""Children"":[{""Title"":null,""Type"":15,""Children"":[]}]}]}]}" };
+        - users/*", @"{""Pipelines"":{""Pipelines"":[{""Identifier"":""MyAppA"",""Project"":null,""Source"":""MyCIPipelineA"",""Version"":null,""Branch"":null,""Tags"":[],""Trigger"":null,""Title"":""MyAppA"",""Type"":9,""Children"":[]},{""Identifier"":""MyAppB"",""Project"":null,""Source"":""MyCIPipelineB"",""Version"":null,""Branch"":null,""Tags"":[],""Trigger"":{""Branches"":{""Id"":""branches"",""Include"":[],""Exclude"":[],""Title"":""branches"",""Type"":15,""Children"":[]},""Tags"":[],""Stages"":[],""TriggerOnPipelineCompletion"":true,""Title"":""trigger"",""Type"":14,""Children"":[]},""Title"":""MyAppB"",""Type"":9,""Children"":[{""Title"":""trigger"",""Type"":14,""Children"":[]}]},{""Identifier"":""MyAppC"",""Project"":""DevOpsProject"",""Source"":""MyCIPipelineC"",""Version"":""20190718.2"",""Branch"":""releases/M159"",""Tags"":[],""Trigger"":{""Branches"":{""Id"":null,""Include"":[""main"",""releases/*""],""Exclude"":[""users/*""],""Title"":null,""Type"":15,""Children"":[]},""Tags"":[],""Stages"":[],""TriggerOnPipelineCompletion"":false,""Title"":""trigger"",""Type"":14,""Children"":[{""Title"":null,""Type"":15,""Children"":[]}]},""Title"":""MyAppC"",""Type"":9,""Children"":[{""Title"":""trigger"",""Type"":14,""Children"":[{""Title"":null,""Type"":15,""Children"":[]}]}]}],""Title"":""pipeline resources"",""Type"":8,""Children"":[{""Title"":""MyAppA"",""Type"":9,""Children"":[]},{""Title"":""MyAppB"",""Type"":9,""Children"":[{""Title"":""trigger"",""Type"":14,""Children"":[]}]},{""Title"":""MyAppC"",""Type"":9,""Children"":[{""Title"":""trigger"",""Type"":14,""Children"":[{""Title"":null,""Type"":15,""Children"":[]}]}]}]},""Repositories"":null,""Containers"":null,""Packages"":null,""Title"":""resources"",""Type"":8,""Children"":[{""Title"":""pipeline resources"",""Type"":8,""Children"":[{""Title"":""MyAppA"",""Type"":9,""Children"":[]},{""Title"":""MyAppB"",""Type"":9,""Children"":[{""Title"":""trigger"",""Type"":14,""Children"":[]}]},{""Title"":""MyAppC"",""Type"":9,""Children"":[{""Title"":""trigger"",""Type"":14,""Children"":[{""Title"":null,""Type"":15,""Children"":[]}]}]}]}]}" };
 
             yield return new object[] { @"resources:
   repositories:
   - repository: common
     type: github
     name: Contoso/CommonTools
-    endpoint: MyContosoServiceConnection", @"{""Pipelines"":[],""Repositories"":[{""Identifier"":""common"",""RepositoryType"":1,""Name"":""Contoso/CommonTools"",""Ref"":null,""Endpoint"":""MyContosoServiceConnection"",""Trigger"":null,""Title"":""common"",""Type"":12,""Children"":[]}],""Containers"":[],""Packages"":[],""Title"":""resources"",""Type"":8,""Children"":[{""Title"":""common"",""Type"":12,""Children"":[]}]}" };
+    endpoint: MyContosoServiceConnection", @"{""Pipelines"":null,""Repositories"":{""Repositories"":[{""Identifier"":""common"",""RepositoryType"":1,""Name"":""Contoso/CommonTools"",""Ref"":null,""Endpoint"":""MyContosoServiceConnection"",""Trigger"":null,""Title"":""common"",""Type"":12,""Children"":[]}],""Title"":""repository resources"",""Type"":8,""Children"":[{""Title"":""common"",""Type"":12,""Children"":[]}]},""Containers"":null,""Packages"":null,""Title"":""resources"",""Type"":8,""Children"":[{""Title"":""repository resources"",""Type"":8,""Children"":[{""Title"":""common"",""Type"":12,""Children"":[]}]}]}" };
 
             yield return new object[] { @"resources:
   containers:
@@ -103,7 +103,7 @@ variables:
       externals: true
       tasks: false
       tools: true
-      work: False", @"{""Pipelines"":[],""Repositories"":[],""Containers"":[{""Identifier"":""linux"",""Image"":""ubuntu:16.04"",""Options"":null,""Endpoint"":null,""Env"":[],""Ports"":[],""Volumes"":[],""MapDockerSocket"":false,""MountReadyOnly"":null,""Title"":""linux"",""Type"":10,""Children"":[]},{""Identifier"":""windows"",""Image"":""myprivate.azurecr.io/windowsservercore:1803"",""Options"":""--privileged"",""Endpoint"":""my_acr_connection"",""Env"":[{""Name"":""My_Var"",""Value"":""hello world"",""Group"":null,""IsReadOnly"":false,""Title"":""My_Var"",""Type"":6,""Children"":[]},{""Name"":""OtherVar"",""Value"":""true"",""Group"":null,""IsReadOnly"":false,""Title"":""OtherVar"",""Type"":6,""Children"":[]},{""Name"":""NumerericVar"",""Value"":""89.0"",""Group"":null,""IsReadOnly"":false,""Title"":""NumerericVar"",""Type"":6,""Children"":[]}],""Ports"":[],""Volumes"":[],""MapDockerSocket"":true,""MountReadyOnly"":null,""Title"":""windows"",""Type"":10,""Children"":[]},{""Identifier"":""my_service"",""Image"":""my_service:tag"",""Options"":null,""Endpoint"":null,""Env"":[],""Ports"":[""8080:80"",""6379""],""Volumes"":[""/src/dir:/dst/dir""],""MapDockerSocket"":true,""MountReadyOnly"":{""Externals"":true,""Tasks"":false,""Tools"":true,""Work"":false,""Title"":""mountReadyOnly"",""Type"":11,""Children"":[]},""Title"":""my_service"",""Type"":10,""Children"":[{""Title"":""mountReadyOnly"",""Type"":11,""Children"":[]}]}],""Packages"":[],""Title"":""resources"",""Type"":8,""Children"":[{""Title"":""linux"",""Type"":10,""Children"":[]},{""Title"":""windows"",""Type"":10,""Children"":[]},{""Title"":""my_service"",""Type"":10,""Children"":[{""Title"":""mountReadyOnly"",""Type"":11,""Children"":[]}]}]}" };
+      work: False", @"{""Pipelines"":null,""Repositories"":null,""Containers"":{""Containers"":[{""Identifier"":""linux"",""Image"":""ubuntu:16.04"",""Options"":null,""Endpoint"":null,""Env"":[],""Ports"":[],""Volumes"":[],""MapDockerSocket"":false,""MountReadyOnly"":null,""Title"":""linux"",""Type"":10,""Children"":[]},{""Identifier"":""windows"",""Image"":""myprivate.azurecr.io/windowsservercore:1803"",""Options"":""--privileged"",""Endpoint"":""my_acr_connection"",""Env"":[{""Name"":""My_Var"",""Value"":""hello world"",""Group"":null,""IsReadOnly"":false,""Title"":""My_Var"",""Type"":6,""Children"":[]},{""Name"":""OtherVar"",""Value"":""true"",""Group"":null,""IsReadOnly"":false,""Title"":""OtherVar"",""Type"":6,""Children"":[]},{""Name"":""NumerericVar"",""Value"":""89.0"",""Group"":null,""IsReadOnly"":false,""Title"":""NumerericVar"",""Type"":6,""Children"":[]}],""Ports"":[],""Volumes"":[],""MapDockerSocket"":true,""MountReadyOnly"":null,""Title"":""windows"",""Type"":10,""Children"":[]},{""Identifier"":""my_service"",""Image"":""my_service:tag"",""Options"":null,""Endpoint"":null,""Env"":[],""Ports"":[""8080:80"",""6379""],""Volumes"":[""/src/dir:/dst/dir""],""MapDockerSocket"":true,""MountReadyOnly"":{""Externals"":true,""Tasks"":false,""Tools"":true,""Work"":false,""Title"":""mountReadyOnly"",""Type"":11,""Children"":[]},""Title"":""my_service"",""Type"":10,""Children"":[{""Title"":""mountReadyOnly"",""Type"":11,""Children"":[]}]}],""Title"":""container resources"",""Type"":8,""Children"":[{""Title"":""linux"",""Type"":10,""Children"":[]},{""Title"":""windows"",""Type"":10,""Children"":[]},{""Title"":""my_service"",""Type"":10,""Children"":[{""Title"":""mountReadyOnly"",""Type"":11,""Children"":[]}]}]},""Packages"":null,""Title"":""resources"",""Type"":8,""Children"":[{""Title"":""container resources"",""Type"":8,""Children"":[{""Title"":""linux"",""Type"":10,""Children"":[]},{""Title"":""windows"",""Type"":10,""Children"":[]},{""Title"":""my_service"",""Type"":10,""Children"":[{""Title"":""mountReadyOnly"",""Type"":11,""Children"":[]}]}]}]}" };
 
             yield return new object[] { @"resources:
   packages:
@@ -112,7 +112,7 @@ variables:
       connection: pat-contoso
       name: yourname/contoso 
       version: 7.130.88 
-      trigger: true", @"{""Pipelines"":[],""Repositories"":[],""Containers"":[],""Packages"":[{""Alias"":""contoso"",""PackageType"":1,""Connection"":""pat-contoso"",""Name"":""yourname/contoso"",""Version"":""7.130.88"",""Trigger"":true,""Title"":""contoso"",""Type"":13,""Children"":[]}],""Title"":""resources"",""Type"":8,""Children"":[{""Title"":""contoso"",""Type"":13,""Children"":[]}]}" };
+      trigger: true", @"{""Pipelines"":null,""Repositories"":null,""Containers"":null,""Packages"":{""Packages"":[{""Alias"":""contoso"",""PackageType"":1,""Connection"":""pat-contoso"",""Name"":""yourname/contoso"",""Version"":""7.130.88"",""Trigger"":true,""Title"":""contoso"",""Type"":13,""Children"":[]}],""Title"":""package resources"",""Type"":8,""Children"":[{""Title"":""contoso"",""Type"":13,""Children"":[]}]},""Title"":""resources"",""Type"":8,""Children"":[{""Title"":""package resources"",""Type"":8,""Children"":[{""Title"":""contoso"",""Type"":13,""Children"":[]}]}]}" };
         }
 
         [Theory]
@@ -120,7 +120,7 @@ variables:
         public void CanParseResources(string yaml, string expectedJson)
         {
             var reader = new StringReader(yaml);
-            Visitor visitor = new Visitor(string.Empty, string.Empty);
+            PipelineVisitor visitor = new PipelineVisitor(string.Empty, string.Empty);
 
             var yamlStream = new YamlStream();
             yamlStream.Load(reader);
@@ -158,7 +158,7 @@ variables:
         public void CanParseTriggers(string yaml, string expectedJson)
         {
             var reader = new StringReader(yaml);
-            Visitor visitor = new Visitor(string.Empty, string.Empty);
+            PipelineVisitor visitor = new PipelineVisitor(string.Empty, string.Empty);
 
             var yamlStream = new YamlStream();
             yamlStream.Load(reader);
@@ -195,7 +195,7 @@ variables:
         public void CanParsePRTriggers(string yaml, string expectedJson)
         {
             var reader = new StringReader(yaml);
-            Visitor visitor = new Visitor(string.Empty, string.Empty);
+            PipelineVisitor visitor = new PipelineVisitor(string.Empty, string.Empty);
 
             var yamlStream = new YamlStream();
             yamlStream.Load(reader);

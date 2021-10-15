@@ -6,7 +6,7 @@ using YamlDotNet.RepresentationModel;
 
 namespace AzurePipelineParser.Visitors
 {
-    public partial class Visitor
+    public partial class PipelineVisitor
     {
         public Resources VisitResources(YamlMappingNode? node)
         {
@@ -19,52 +19,38 @@ namespace AzurePipelineParser.Visitors
             {
                 switch (child.Key.ToString().ToLower())
                 {
+                    case "packages":
+                    case "containers":
+                    case "repositories":
                     case "pipelines":
-                        var pipelinesNode = child.Value as YamlSequenceNode;
-                        if (pipelinesNode == null)
-                            throw new ArgumentNullException(nameof(pipelinesNode));
-                        foreach(var pipeline in pipelinesNode.Children)
+                        ResourcesCollectionType type = child.Key.ToString().ToLower() switch
                         {
-                            var newPipelineResource = VisitPipelineResource(pipeline as YamlMappingNode);
-                            resources.Pipelines.Add(newPipelineResource);
-                            resources.Children.Add(newPipelineResource);
+                            "packages" => ResourcesCollectionType.Packages,
+                            "containers" => ResourcesCollectionType.Containers,
+                            "repositories" => ResourcesCollectionType.Repositories,
+                            _ => ResourcesCollectionType.Pipelines
+                        };
+
+                        var resourcesCollection = VisitResourcesCollection(child.Value as YamlSequenceNode, type);
+                        switch (type)
+                        {
+                            case ResourcesCollectionType.Packages:
+                                resources.Packages = (PackageResources)resourcesCollection;
+                                break;
+                            case ResourcesCollectionType.Containers:
+                                resources.Containers = (ContainerResources)resourcesCollection;
+                                break;
+                            case ResourcesCollectionType.Repositories:
+                                resources.Repositories = (RepositoryResources)resourcesCollection;
+                                break;
+                            case ResourcesCollectionType.Pipelines:
+                                resources.Pipelines = (PipelineResources)resourcesCollection;
+                                break;
                         }
+                        resources.Children.Add(resourcesCollection);
                         break;
                     case "builds":
                         // Do nothing for now. There is no official spec for build resource, so skip for now.
-                        break;
-                    case "repositories":
-                        var repositoryNode = child.Value as YamlSequenceNode;
-                        if (repositoryNode == null)
-                            throw new ArgumentNullException(nameof(pipelinesNode));
-                        foreach (var repository in repositoryNode.Children)
-                        {
-                            var newRepositoryResource = VisitRepositoryResource(repository as YamlMappingNode);
-                            resources.Repositories.Add(newRepositoryResource);
-                            resources.Children.Add(newRepositoryResource);
-                        }
-                        break;
-                    case "containers":
-                        var containersNode = child.Value as YamlSequenceNode;
-                        if (containersNode == null)
-                            throw new ArgumentNullException(nameof(pipelinesNode));
-                        foreach (var container in containersNode.Children)
-                        {
-                            var newContainerResource = VisitContainerResource(container as YamlMappingNode);
-                            resources.Containers.Add(newContainerResource);
-                            resources.Children.Add(newContainerResource);
-                        }
-                        break;
-                    case "packages":
-                        var packagesNode = child.Value as YamlSequenceNode;
-                        if (packagesNode == null)
-                            throw new ArgumentNullException(nameof(packagesNode));
-                        foreach (var package in packagesNode.Children)
-                        {
-                            var newPackageResource = VisitPackageResource(package as YamlMappingNode);
-                            resources.Packages.Add(newPackageResource);
-                            resources.Children.Add(newPackageResource);
-                        }
                         break;
                     default:
                         throw new Exception("Unexpected resource type.");
@@ -72,6 +58,47 @@ namespace AzurePipelineParser.Visitors
             }
 
             return resources;
+        }
+
+        public ResourcesCollection VisitResourcesCollection(YamlSequenceNode? node, ResourcesCollectionType collectionType)
+        {
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
+
+            ResourcesCollection collection = collectionType switch
+            {
+                ResourcesCollectionType.Pipelines => new PipelineResources(),
+                ResourcesCollectionType.Containers => new ContainerResources(),
+                ResourcesCollectionType.Packages => new PackageResources(),
+                ResourcesCollectionType.Repositories => new RepositoryResources(),
+                _ => null!
+            };
+
+            IPipelineNode? newResource = null;
+            foreach (var resource in node.Children)
+            {
+                switch (collectionType)
+                {
+                    case ResourcesCollectionType.Pipelines:
+                        newResource = VisitPipelineResource(resource as YamlMappingNode);
+                        ((PipelineResources)collection).Pipelines.Add((PipelineResource)newResource);
+                        break;
+                    case ResourcesCollectionType.Containers:
+                        newResource = VisitContainerResource(resource as YamlMappingNode);
+                        ((ContainerResources)collection).Containers.Add((ContainerResource)newResource);
+                        break;
+                    case ResourcesCollectionType.Packages:
+                        newResource = VisitPackageResource(resource as YamlMappingNode);
+                        ((PackageResources)collection).Packages.Add((PackageResource)newResource);
+                        break;
+                    case ResourcesCollectionType.Repositories:
+                        newResource = VisitRepositoryResource(resource as YamlMappingNode);
+                        ((RepositoryResources)collection).Repositories.Add((RepositoryResource)newResource);
+                        break;
+                }
+                collection.Children.Add(newResource!);
+            }
+            return collection;
         }
 
         public PackageResource VisitPackageResource(YamlMappingNode? node)

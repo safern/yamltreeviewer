@@ -7,12 +7,12 @@ using YamlDotNet.RepresentationModel;
 
 namespace AzurePipelineParser.Visitors
 {
-    public partial class Visitor
+    public partial class PipelineVisitor
     {
-        public Visitor(string yamlPath)
+        public PipelineVisitor(string yamlPath)
             : this(yamlPath, Path.GetDirectoryName(yamlPath)) { }
 
-        public Visitor(string currentYamlPath, string yamlRootPath)
+        public PipelineVisitor(string currentYamlPath, string yamlRootPath)
         {
             CurrentYamlPath = currentYamlPath;
             YamlRootPath = yamlRootPath;

@@ -6,7 +6,7 @@ using YamlDotNet.RepresentationModel;
 
 namespace AzurePipelineParser.Visitors
 {
-    public partial class Visitor
+    public partial class PipelineVisitor
     {
         public PushTrigger VisitPushTrigger(YamlNode? node)
         {

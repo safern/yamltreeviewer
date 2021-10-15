@@ -6,7 +6,7 @@ using YamlDotNet.RepresentationModel;
 
 namespace AzurePipelineParser.Visitors
 {
-    public partial class Visitor
+    public partial class PipelineVisitor
     {
         public Pipeline VisitPipeline(YamlMappingNode node)
         {
@@ -41,13 +41,10 @@ namespace AzurePipelineParser.Visitors
                         break;
                     case "stages":
                         throw new NotImplementedException();
-                        break;
                     case "jobs":
                         throw new NotImplementedException();
-                        break;
                     case "steps":
                         throw new NotImplementedException();
-                        break;
                     default:
                         throw new Exception("Unknown child found");
                 }
