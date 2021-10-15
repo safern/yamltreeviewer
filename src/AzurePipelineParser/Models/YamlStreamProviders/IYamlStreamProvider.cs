@@ -1,10 +1,12 @@
 ﻿
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace AzurePipelineParser.Models.YamlStreamProviders
 {
     public interface IYamlStreamProvider
     {
-        Stream GetStreamFromPath(string path); 
+        Task<Stream> GetStreamFromPath(string path, CancellationToken cancellationToken = default); 
     }
 }
