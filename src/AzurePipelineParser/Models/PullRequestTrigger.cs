@@ -14,6 +14,8 @@ namespace AzurePipelineParser.Models
 
         public bool AutoCancel { get; set; }
 
+        public bool Disabled { get; set; }
+
         public IncludeExclude? Branches { get; set; } = new IncludeExclude() { Id = "branches" };
 
         public IncludeExclude? Paths { get; set; } = new IncludeExclude() { Id = "paths" };

@@ -14,6 +14,8 @@ namespace AzurePipelineParser.Models
 
         public bool Batch { get; set; }
 
+        public bool Disabled { get; set; }
+
         public IncludeExclude? Branches { get; set; } = new IncludeExclude() { Id = "branches" };
 
         public IncludeExclude? Tags { get; set; } = new IncludeExclude() { Id = "tags" };
