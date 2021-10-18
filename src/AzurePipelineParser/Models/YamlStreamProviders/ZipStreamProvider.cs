@@ -20,29 +20,26 @@ namespace AzurePipelineParser.Models.YamlStreamProviders
             _zipStreamData = new Lazy<ConcurrentDictionary<string, Stream>>(InitZipStreamData);
         }
 
-        public async Task<Stream> GetStreamFromPath(string path, CancellationToken cancellationToken = default)
+        public Task<Stream> GetStreamFromPathAsync(string path, CancellationToken cancellationToken = default)
         {
             ConcurrentDictionary<string, Stream> dictionary = _zipStreamData.Value;
 
-            return await Task.Run(() =>
+            if (path.StartsWith('/'))
             {
-                if (path.StartsWith('/'))
-                {
-                    path = path.TrimStart('/');
-                }
+                path = path.TrimStart('/');
+            }
 
-                if (!dictionary.TryGetValue(path, out Stream result))
-                {
-                    throw new FileNotFoundException(path);
-                }
+            if (!dictionary.TryGetValue(path, out Stream result))
+            {
+                throw new FileNotFoundException(path);
+            }
 
-                if (result.CanSeek && result.Position > 0)
-                {
-                    result.Seek(0, SeekOrigin.Begin);
-                }
+            if (result.CanSeek && result.Position > 0)
+            {
+                result.Seek(0, SeekOrigin.Begin);
+            }
 
-                return result;
-            }, cancellationToken);
+            return Task.FromResult(result);
         }
 
         public async ValueTask DisposeAsync()
