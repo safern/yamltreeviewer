@@ -10,19 +10,19 @@ namespace AzurePipelineParser.Models.YamlStreamProviders
     public class ZipStreamProvider : IYamlStreamProvider, IAsyncDisposable
     {
         private Stream? _zipStream;
-        private Lazy<ConcurrentDictionary<string, Stream>> _zipStreamData;
+        private AsyncLazy<ConcurrentDictionary<string, Stream>> _zipStreamData;
         private ZipArchive _zipArchive;
 
         public ZipStreamProvider(Stream zipStream)
         {
             _zipStream = zipStream;
             _zipArchive = new ZipArchive(_zipStream, ZipArchiveMode.Read, leaveOpen: true);
-            _zipStreamData = new Lazy<ConcurrentDictionary<string, Stream>>(InitZipStreamData);
+            _zipStreamData = new AsyncLazy<ConcurrentDictionary<string, Stream>>(InitZipStreamData);
         }
 
-        public Task<Stream> GetStreamFromPathAsync(string path, CancellationToken cancellationToken = default)
+        public async Task<Stream> GetStreamFromPathAsync(string path, CancellationToken cancellationToken = default)
         {
-            ConcurrentDictionary<string, Stream> dictionary = _zipStreamData.Value;
+            ConcurrentDictionary<string, Stream> dictionary = await _zipStreamData.Value;
 
             if (path.StartsWith('/'))
             {
@@ -39,7 +39,7 @@ namespace AzurePipelineParser.Models.YamlStreamProviders
                 result.Seek(0, SeekOrigin.Begin);
             }
 
-            return Task.FromResult(result);
+            return result;
         }
 
         public async ValueTask DisposeAsync()
@@ -58,26 +58,39 @@ namespace AzurePipelineParser.Models.YamlStreamProviders
 
             if (_zipStreamData != null && _zipStreamData.IsValueCreated)
             {
-                foreach (Stream stream in _zipStreamData.Value.Values)
+                ConcurrentDictionary<string, Stream> dic = await _zipStreamData.Value;
+                foreach (Stream stream in dic.Values)
                     await stream.DisposeAsync();
 
-                _zipStreamData.Value.Clear();
+                dic.Clear();
                 _zipStreamData = null!;
             }
         }
 
-        private ConcurrentDictionary<string, Stream> InitZipStreamData()
+        private Task<ConcurrentDictionary<string, Stream>> InitZipStreamData()
         {
-            ConcurrentDictionary<string, Stream> data = new();
-            foreach (ZipArchiveEntry entry in _zipArchive.Entries)
+            return Task.Run(() =>
             {
-                if (entry.Name.EndsWith(".yml", StringComparison.OrdinalIgnoreCase))
+                ConcurrentDictionary<string, Stream> data = new();
+                foreach (ZipArchiveEntry entry in _zipArchive.Entries)
                 {
-                    data.AddOrUpdate(entry.FullName, (k) => entry.Open(), (k, s) => entry.Open());
+                    if (entry.Name.EndsWith(".yml", StringComparison.OrdinalIgnoreCase))
+                    {
+                        data.AddOrUpdate(entry.FullName, (k) => entry.Open(), (k, s) => entry.Open());
+                    }
                 }
-            }
 
-            return data;
+                return data;
+            });
+        }
+
+        private class AsyncLazy<T> : Lazy<Task<T>>
+        {
+            public AsyncLazy(Func<T> valueFactory) :
+                base(() => Task.Factory.StartNew(valueFactory)) { }
+
+            public AsyncLazy(Func<Task<T>> taskFactory) :
+                base(() => Task.Factory.StartNew(() => taskFactory()).Unwrap()) { }
         }
     }
 }
