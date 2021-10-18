@@ -12,7 +12,13 @@
 </head>
 
 <body>
-    <div id="app">Loading...</div>
+    <div id="app">
+        <div class="loading-container full-page">
+            <div class="spinner-grow text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    </div>
 
     <div id="blazor-error-ui">
         An unhandled error has occurred.
@@ -20,6 +26,56 @@
         <a class="dismiss">🗙</a>
     </div>
     <script src="_framework/blazor.webassembly.js"></script>
+    <script>
+        window.interopFunctions = {
+            clickElement: function (element) {
+                element.click();
+            },
+
+            initializeClickElement : function (clickElement, inputFile) {
+
+                function onClick(e) {
+                    e.preventDefault();
+                    inputFile.click();
+                }
+
+                function onDragHover(e) {
+                    e.preventDefault();
+                    clickElement.classList.add("hover");
+                }
+
+                function onDragLeave(e) {
+                    e.preventDefault();
+                    clickElement.classList.remove("hover");
+                }
+
+                function onDrop(e) {
+                    console.log("handling drop");
+                    e.preventDefault();
+
+                    inputFile.files = e.dataTransfer.files;
+                    const event = new Event('change', { bubbles: true });
+                    inputFile.dispatchEvent(event);
+                }
+
+                clickElement.addEventListener("click", onClick);
+                clickElement.addEventListener("drop", onDrop);
+                clickElement.addEventListener("dragenter", onDragHover);
+                clickElement.addEventListener("dragover", onDragHover);
+                clickElement.addEventListener("dragleave", onDragLeave);
+
+                return {
+                    dispose: () => {
+                        clickElement.removeEventListener('click', onClick);
+                        clickElement.removeEventListener('drop', onDrop);
+                        clickElement.removeEventListener("dragenter", onDragHover);
+                        clickElement.removeEventListener("dragover", onDragHover);
+                        clickElement.removeEventListener("dragleave", onDragLeave);
+                    }
+                }
+            }
+        }
+    </script>
 </body>
 
 </html>
