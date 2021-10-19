@@ -1,6 +1,4 @@
 ﻿@page "/"
-@inject HttpClient Http
-@inject IJSRuntime JS
 
 <PageTitle>Index</PageTitle>
 
@@ -28,54 +26,6 @@ else
             <p class="upload-file-text">@(_currentFile == null ? "Please select or a zip file with all the yaml files used in your azure pipeline" : _currentFile.Name)</p>
         </div>
         <div class="col-sm-3"></div>
-        <InputFile OnChange="@OnChange" @ref="fileInput" style="display:none" id="file-input" accept=".zip"/>
+        <InputFile OnChange="@OnInputFileChanged" @ref="fileInput" style="display:none" id="file-input" accept=".zip"/>
     </div>
-}
-
-@code {
-    private YamlNodeModel? _root = null;
-    private bool _loadingTree = false;
-    private bool _shouldShowTree = false;
-    private InputFile? fileInput;
-    private ElementReference? clickContainerElement;
-    private ElementReference? uploadFileText;
-    private IJSObjectReference? _clickContainerInstance;
-    private IBrowserFile? _currentFile = null;
-
-    protected override async Task OnInitializedAsync()
-    {
-        _loadingTree = true;
-        _root = await Http!.GetFromJsonAsync<YamlNodeModel>("sample-data/yaml-tree.json");
-    }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            // Initialize the drop zone
-            _clickContainerInstance = await JS.InvokeAsync<IJSObjectReference>("interopFunctions.initializeClickElement", clickContainerElement, fileInput!.Element);
-        }
-    }
-
-
-    private void OnChange(InputFileChangeEventArgs e)
-    {
-        if (e.File.ContentType != "application/x-zip-compressed")
-        {
-            // TODO show error.
-            return;
-        }
-
-        _currentFile = e.File;
-
-    }
-
-    public async ValueTask DisposeAsync()
-    {
-        if (_clickContainerInstance != null)
-        {
-            await _clickContainerInstance.InvokeVoidAsync("dispose");
-            await _clickContainerInstance.DisposeAsync();
-        }
-    }
 }
