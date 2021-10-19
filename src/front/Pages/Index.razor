@@ -1,25 +1,31 @@
 ﻿@page "/"
-@inject HttpClient Http
 
 <PageTitle>Index</PageTitle>
 
-@if (_root == null)
+@if (_shouldShowTree)
 {
-    <div class="loading-container full-page">
-        <div class="spinner-grow text-primary" role="status">
-            <span class="visually-hidden">Loading...</span>
+    @if (_loadingTree)
+    {
+        <div class="loading-container full-page">
+            <div class="spinner-grow text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
         </div>
-    </div>
+    }
+    else
+    {
+        <YamlNode Node="@_root" />
+    }
 }
 else
 {
-    <YamlNode Node="@_root" />
-}
-
-@code {
-    private YamlNodeModel? _root = null;
-    protected override async Task OnInitializedAsync()
-    {
-        _root = await Http!.GetFromJsonAsync<YamlNodeModel>("sample-data/yaml-tree.json");
-    }
+    <div class="row">
+        <div class="col-sm-3"></div>
+        <div class="file-picker-container col-sm-6" @ref="clickContainerElement">
+            <p class="icon-container"><i class="bi bi-file-zip"></i></p>
+            <p class="upload-file-text">@(_currentFile == null ? "Please select or a zip file with all the yaml files used in your azure pipeline" : _currentFile.Name)</p>
+        </div>
+        <div class="col-sm-3"></div>
+        <InputFile OnChange="@OnInputFileChanged" @ref="fileInput" style="display:none" id="file-input" accept=".zip"/>
+    </div>
 }

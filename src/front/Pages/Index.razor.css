@@ -1,25 +1,22 @@
-﻿.loading-container {
-    text-align: center;
-    height: 100%;
-    width: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 50;
-    background-color: rgba(255,255,255,0.8);
+﻿.file-picker-container {
+    position: relative;
+    padding: 10px;
+    border-radius: 20px;
+    box-shadow: 1px 1px 5px lightgrey;
+    cursor: pointer;
+    transition: box-shadow linear 0.5s;
 }
 
-    .loading-container.full-page {
-        position: fixed;
-        top: 56px;
-        height: 100vh;
-        width: 100vw;
+    .file-picker-container:hover {
+        box-shadow: 1px 1px 15px lightgrey;
     }
 
-        .loading-container.full-page > .spinner-grow {
-            position: absolute;
-            top: 45%;
-            left: 45%;
-            width: 60px;
-            height: 60px;
-        }
+    .file-picker-container > p {
+        text-align: center;
+    }
+
+    .file-picker-container > .icon-container {
+        font-size: 80px;
+        color: #751aff;
+        opacity: 0.4;
+    }
